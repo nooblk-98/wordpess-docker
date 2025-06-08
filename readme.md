@@ -6,6 +6,7 @@ This stack enables deploying a **production-ready WordPress site** using Docker.
 * ✅ Plugin auto-installation
 * ✅ Database initialization check
 * ✅ Optional support for external databases
+* ✅ Base PHP image : `ghcr.io/nooblk-98/php-docker-nginx:php82`
 
 ---
 
@@ -202,3 +203,4 @@ They will be installed and activated during the first container startup.
 ## Contributing
 
 Contributions are always welcome!
+
