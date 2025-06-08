@@ -5,7 +5,6 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: ${PROJECT_NAME}
-    hostname: localhost
     environment:
       WP_SITE_TITLE: ${WP_SITE_TITLE}
       WP_ADMIN_USER: ${WP_ADMIN_USER}
