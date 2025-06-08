@@ -8,6 +8,17 @@ This stack enables deploying a **production-ready WordPress site** using Docker.
 * ✅ Optional support for external databases
 
 ---
+
+## 🖥️ Platform Support
+
+✅ **Supports both ARM64 and AMD64 architectures**
+This image is built with multi-architecture support and runs seamlessly on:
+
+* Apple Silicon (M1/M2)
+* AWS Graviton
+* Intel/AMD-based servers and desktops
+
+---
 ## 🛠️ Setup Instructions
 
 ### Create folder  and copy docker compose file and `env_example` as `.env` 
@@ -191,4 +202,3 @@ They will be installed and activated during the first container startup.
 ## Contributing
 
 Contributions are always welcome!
-
