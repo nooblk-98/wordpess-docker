@@ -1,7 +1,12 @@
+version: "3.8"
+
 services:
   wordpress:
-    image: ghcr.io/nooblk-98/wordpress-docker:php82
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: ${PROJECT_NAME}
+    hostname: localhost
     environment:
       WP_SITE_TITLE: ${WP_SITE_TITLE}
       WP_ADMIN_USER: ${WP_ADMIN_USER}
