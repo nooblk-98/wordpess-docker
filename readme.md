@@ -28,7 +28,7 @@ This image is built with multi-architecture support and runs seamlessly on:
 ```bash
 services:
   wordpress:
-    image: ghcr.io/nooblk-98/wordpress-docker:php82
+    image: ghcr.io/nooblk-98/wordpess-docker:php82
     container_name: ${PROJECT_NAME}
     hostname: localhost
     environment:
