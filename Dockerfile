@@ -11,9 +11,8 @@ RUN apk add --no-cache dos2unix unzip less nano netcat-openbsd \
 
 # Increase PHP memory limit to avoid wp-cli crash
 RUN echo "memory_limit = 512M" > /usr/local/etc/php/conf.d/memory-limit.ini 
-
-# install  privet plugins
-# COPY plugins/all-in-one-wp-migration-unlimited-extension.zip /var/www/html/wp-content/plugins/
+RUN echo "upload_max_filesize=${PHP_UPLOAD_MAX_FILESIZE:-64M}" > /usr/local/etc/php/conf.d/uploads.ini
+RUN echo "post_max_size=${PHP_POST_MAX_SIZE:-64M}" >> /usr/local/etc/php/conf.d/uploads.ini
 
 
 # Copy and fix entrypoint script
