@@ -12,6 +12,9 @@ services:
       WORDPRESS_DB_USER: ${MYSQL_USER}
       WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
       WP_PLUGINS: ${WP_PLUGINS}
+      PHP_UPLOAD_MAX_FILESIZE: ${UPLOAD_MAX}
+      PHP_POST_MAX_SIZE: ${POST_MAX}
+      PHP_MEMORY_LIMIT: ${MEMORY_LIMIT}
       WORDPRESS_DEBUG: false
     volumes:
       - web_data:/var/www/html
