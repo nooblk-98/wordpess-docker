@@ -1,4 +1,4 @@
-FROM ghcr.io/nooblk-98/php-docker-nginx:php82
+FROM ghcr.io/nooblk-98/php-docker-nginx:php74
 
 # Set working directory
 WORKDIR /var/www/html
