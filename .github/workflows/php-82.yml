@@ -1,9 +1,7 @@
 name: Build Docker Image
 
 on:
-  release:
-    types: [published]
-  workflow_dispatch: 
+  workflow_dispatch:
 
 permissions:
   contents: read
