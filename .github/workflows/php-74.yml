@@ -1,4 +1,4 @@
-name: Build Docker Image
+name: wordpress php74
 
 on:
   workflow_dispatch:
