@@ -45,7 +45,6 @@ define('DB_PASSWORD', getenv('WORDPRESS_DB_PASSWORD'));
 define( 'DB_HOST', getenv('WORDPRESS_DB_HOST') );
 define('DB_CHARSET', 'utf8');
 define('DB_COLLATE', '');
-define( 'WP_DEBUG', !!getenv('WORDPRESS_DEBUG', '') );
 
 /**
  * Docker image fallback values above are sourced from the official WordPress installation wizard:
@@ -124,3 +123,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /** Sets up WordPress vars and included files. */
 require_once ABSPATH . 'wp-settings.php';
+
+define('WP_DEBUG', false);
+@ini_set('display_errors', 0);

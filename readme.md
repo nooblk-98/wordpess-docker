@@ -28,7 +28,7 @@ This image is built with multi-architecture support and runs seamlessly on:
 ```bash
 services:
   wordpress:
-    image: ghcr.io/nooblk-98/wordpess-docker:php82
+    image: lahiru98s/wordpess-docker:php82
     container_name: ${PROJECT_NAME}
     hostname: localhost
     environment:
@@ -95,6 +95,12 @@ WP_ADMIN_EMAIL=admin@example.com
 
 # pre install plugin list 
 WP_PLUGINS="advanced-custom-fields temporary-login-without-password all-in-one-wp-migration"
+
+
+# PHP Limits
+UPLOAD_MAX=256M
+POST_MAX=256M
+MEMORY_LIMIT=512M
 
 ````
 ---
