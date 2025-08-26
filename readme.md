@@ -96,6 +96,12 @@ WP_ADMIN_EMAIL=admin@example.com
 # pre install plugin list 
 WP_PLUGINS="advanced-custom-fields temporary-login-without-password all-in-one-wp-migration"
 
+
+# PHP Limits
+UPLOAD_MAX=256M
+POST_MAX=256M
+MEMORY_LIMIT=512M
+
 ````
 ---
 
