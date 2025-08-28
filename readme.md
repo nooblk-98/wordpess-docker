@@ -106,8 +106,12 @@ services:
       - "8080:80"
     depends_on:
       - mariadb
-    labels:
-      - autoheal=true # requires autoheal service below
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z 127.0.0.1 80 || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 30s
 
   mariadb:
     image: mariadb:10
@@ -122,8 +126,12 @@ services:
       - db_data:/var/lib/mysql
     ports:
       - "3306:3306"
-    labels:
-      - autoheal=true # optional
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -p$MYSQL_ROOT_PASSWORD || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
 
   # Optional: automatically restart unhealthy containers
   autoheal:
@@ -137,7 +145,7 @@ volumes:
   web_data:
 ```
 
-Note: Autoheal restarts containers that define a `HEALTHCHECK`. If your images don’t include one, consider adding a healthcheck in the compose file for best results.
+Note: Healthchecks are included above so tools like Autoheal can act reliably.
 
 ---
 
@@ -266,7 +274,7 @@ To fully reset, remove volumes: `docker compose down -v` (this deletes your data
 
 ## Optional: Autoheal
 
-You can add [willfarrell/autoheal](https://github.com/willfarrell/docker-autoheal) to auto‑restart unhealthy containers. In your compose file:
+You can add [willfarrell/autoheal](https://github.com/willfarrell/docker-autoheal) to auto‑restart unhealthy containers. Healthchecks are already included in the example above. If you prefer a dedicated compose with Autoheal enabled and labels set, use `docker-compose.autoheal.yml` (added to this repo) or the snippet below:
 
 ```
 services:
@@ -277,6 +285,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   wordpress:
+    labels:
+      - autoheal=true
+  mariadb:
     labels:
       - autoheal=true
 ```

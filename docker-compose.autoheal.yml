@@ -1,0 +1,66 @@
+services:
+  wordpress:
+    image: ghcr.io/nooblk-98/wordpess-docker:php82
+    container_name: ${PROJECT_NAME}
+    restart: unless-stopped
+    environment:
+      WP_SITE_TITLE: ${WP_SITE_TITLE}
+      WP_ADMIN_USER: ${WP_ADMIN_USER}
+      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
+      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
+      WORDPRESS_DB_HOST: ${MYSQL_HOST}
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WP_PLUGINS: ${WP_PLUGINS}
+      PHP_UPLOAD_MAX_FILESIZE: ${UPLOAD_MAX}
+      PHP_POST_MAX_SIZE: ${POST_MAX}
+      PHP_MEMORY_LIMIT: ${MEMORY_LIMIT}
+      WORDPRESS_DEBUG: false
+    volumes:
+      - web_data:/var/www/html
+    ports:
+      - "8080:80"
+    depends_on:
+      - mariadb
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z 127.0.0.1 80 || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 30s
+    labels:
+      - autoheal=true
+
+  mariadb:
+    image: mariadb:10
+    container_name: ${PROJECT_NAME}-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -p$MYSQL_ROOT_PASSWORD || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    labels:
+      - autoheal=true
+
+  autoheal:
+    image: willfarrell/autoheal
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  db_data:
+  web_data:
+
