@@ -26,14 +26,16 @@ This image is built with multi-architecture support and runs seamlessly on:
 ### 1. Prepare configuration
 
 Create a project directory, copy the `docker-compose.yml` file, and duplicate `env_example` as `.env`.
-Below is a minimal `docker-compose.yml` example:
+Below is a complete `docker-compose.yml` example that pairs WordPress and MariaDB with an [autoheal](https://github.com/willfarrell/docker-autoheal) service for automatic container recovery:
 
-```bash
+```yaml
 services:
   wordpress:
     image: lahiru98s/wordpess-docker:php82
     container_name: ${PROJECT_NAME}
     hostname: localhost
+    labels:
+      - autoheal=true
     environment:
       WP_SITE_TITLE: ${WP_SITE_TITLE}
       WP_ADMIN_USER: ${WP_ADMIN_USER}
@@ -59,6 +61,8 @@ services:
     image: mariadb:10
     container_name: ${PROJECT_NAME}-db
     restart: always
+    labels:
+      - autoheal=true
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -68,6 +72,12 @@ services:
       - db_data:/var/lib/mysql
     ports:
       - "3306:3306"
+
+  autoheal:
+    image: willfarrell/autoheal
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
 volumes:
   db_data:
@@ -160,25 +170,6 @@ docker compose up --build -d wordpress
 
 ## 🚑 Automatic Recovery with Autoheal
 
-Keep your WordPress stack running by automatically restarting containers that report an unhealthy status. Add the [willfarrell/autoheal](https://github.com/willfarrell/docker-autoheal) service to your `docker-compose.yml` and label the containers you want monitored.
-
-```yaml
-services:
-  wordpress:
-    labels:
-      - autoheal=true
-    # ...other settings
-
-  mariadb:
-    labels:
-      - autoheal=true
-    # ...other settings
-
-  autoheal:
-    image: willfarrell/autoheal
-    restart: always
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
 ```
 
 > **Note:** Autoheal only restarts containers that define a `HEALTHCHECK`. Ensure your images provide one or add it in your compose file.
