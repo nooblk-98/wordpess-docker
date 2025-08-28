@@ -170,6 +170,16 @@ docker compose up --build -d wordpress
 
 ## 🚑 Automatic Recovery with Autoheal
 
+The compose example above already integrates the [willfarrell/autoheal](https://github.com/willfarrell/docker-autoheal) service, which watches for failing health checks and restarts any container labeled `autoheal=true`.
+
+To add Autoheal to another stack, include the service below and tag the containers you want monitored with `autoheal=true`:
+
+```yaml
+autoheal:
+  image: willfarrell/autoheal
+  restart: always
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
 ```
 
 > **Note:** Autoheal only restarts containers that define a `HEALTHCHECK`. Ensure your images provide one or add it in your compose file.
@@ -233,4 +243,3 @@ They will be installed and activated during the first container startup.
 ## Contributing
 
 Contributions are always welcome!
-
