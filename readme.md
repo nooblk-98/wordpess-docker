@@ -1,6 +1,7 @@
-##  WordPress Docker Deployment Guide
+## WordPress Docker Deployment Guide
 
-This stack enables deploying a **production-ready WordPress site** using Docker. It includes:
+This project provides a simple way to run a **production-ready WordPress site** with Docker.
+The stack includes:
 
 * ✅ WordPress with WP-CLI
 * ✅ Plugin auto-installation
@@ -22,8 +23,10 @@ This image is built with multi-architecture support and runs seamlessly on:
 ---
 ## 🛠️ Setup Instructions
 
-### Create folder  and copy docker compose file and `env_example` as `.env` 
-    sample docker-compose.yml
+### 1. Prepare configuration
+
+Create a project directory, copy the `docker-compose.yml` file, and duplicate `env_example` as `.env`.
+Below is a minimal `docker-compose.yml` example:
 
 ```bash
 services:
@@ -72,28 +75,28 @@ volumes:
 
 ```
 
-### Copy and configure environment variables
+### 2. Configure environment variables
 
 ```bash
 cp .env_example .env
 # Then edit .env to set your DB, WP Admin, and plugin settings
 ```
 ```bash
-# Wordperss secrets 
-PROJECT_NAME=wordperss
+# WordPress secrets
+PROJECT_NAME=wordpress
 MYSQL_DATABASE=wordpress_database
 MYSQL_USER=wordpress_user
 MYSQL_PASSWORD=YW08dsm0XP2cek6f
 MYSQL_ROOT_PASSWORD=lb9tjjGGHTIvZZr6
 MYSQL_HOST=mariadb
 
-# admin secrets 
-WP_SITE_TITLE=wordperss
+# Admin credentials
+WP_SITE_TITLE=wordpress
 WP_ADMIN_USER=admin
 WP_ADMIN_PASSWORD=secureAdmin123
 WP_ADMIN_EMAIL=admin@example.com
 
-# pre install plugin list 
+# Pre-install plugin list
 WP_PLUGINS="advanced-custom-fields temporary-login-without-password all-in-one-wp-migration"
 
 
@@ -102,7 +105,7 @@ UPLOAD_MAX=256M
 POST_MAX=256M
 MEMORY_LIMIT=512M
 
-````
+```
 ---
 
 ## 🔄 Deploy with Internal MariaDB
@@ -122,7 +125,7 @@ This will:
 
 ### 4. Access your site
 
-Go to: [http://localhost:8080](http://localhost:8080)
+Visit [http://localhost:8080](http://localhost:8080) in your browser.
 
 ---
 
@@ -152,6 +155,33 @@ MYSQL_PASSWORD=securepass
 ```bash
 docker compose up --build -d wordpress
 ```
+
+---
+
+## 🚑 Automatic Recovery with Autoheal
+
+Keep your WordPress stack running by automatically restarting containers that report an unhealthy status. Add the [willfarrell/autoheal](https://github.com/willfarrell/docker-autoheal) service to your `docker-compose.yml` and label the containers you want monitored.
+
+```yaml
+services:
+  wordpress:
+    labels:
+      - autoheal=true
+    # ...other settings
+
+  mariadb:
+    labels:
+      - autoheal=true
+    # ...other settings
+
+  autoheal:
+    image: willfarrell/autoheal
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+```
+
+> **Note:** Autoheal only restarts containers that define a `HEALTHCHECK`. Ensure your images provide one or add it in your compose file.
 
 ---
 
