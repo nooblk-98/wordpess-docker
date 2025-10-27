@@ -17,7 +17,7 @@ services:
       PHP_MEMORY_LIMIT: ${MEMORY_LIMIT}
       WORDPRESS_DEBUG: false
     volumes:
-      - web_data:/var/www/html
+      - ./www:/var/www/html
     ports:
       - "8080:80"
     depends_on:
@@ -39,4 +39,3 @@ services:
 
 volumes:
   db_data:
-  web_data:
