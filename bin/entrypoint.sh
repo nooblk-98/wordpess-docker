@@ -2,7 +2,7 @@
 set -e
 
 # database availability check
-/usr/local/bin/db-helth-check.sh || exit 1
+/usr/local/bin/db-health-check.sh || exit 1
 
 # wordpress init 
 /usr/local/bin/init.sh

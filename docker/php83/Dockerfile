@@ -16,12 +16,14 @@ RUN echo "memory_limit = 512M" > /usr/local/etc/php/conf.d/memory-limit.ini
 COPY bin/entrypoint.sh /entrypoint.sh
 COPY config/wp-config.php /var/www/html/wp-config.php
 COPY scripts/init.sh /usr/local/bin/init.sh
-COPY scripts/db-helth-check.sh /usr/local/bin/db-helth-check.sh
+COPY scripts/db-helth-check.sh /usr/local/bin/db-health-check.sh
 
 # setup  entrypoint
 RUN chmod +x /usr/local/bin/init.sh && \
-    chmod +x /usr/local/bin/db-helth-check.sh && \
-    dos2unix /entrypoint.sh && chmod +x /entrypoint.sh
+    chmod +x /usr/local/bin/db-health-check.sh && \
+    dos2unix /entrypoint.sh && chmod +x /entrypoint.sh && \
+    dos2unix /usr/local/bin/init.sh && \
+    dos2unix /usr/local/bin/db-health-check.sh
 
 EXPOSE 80
 

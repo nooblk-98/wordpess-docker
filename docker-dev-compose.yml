@@ -17,7 +17,7 @@ services:
       WP_PLUGINS: ${WP_PLUGINS}
       WORDPRESS_DEBUG: false
     volumes:
-      - web_data:/var/www/html
+      - ./www:/var/www/html
     ports:
       - "8080:80"
     depends_on:

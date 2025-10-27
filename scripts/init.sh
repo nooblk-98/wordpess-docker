@@ -19,7 +19,7 @@ fi
 
 # Copy wp-config.php to the correct location
 echo "📋 Copying wp-config.php to WordPress directory..."
-cp /var/www/wp-config.php /var/www/html/wp-config.php
+wget https://raw.githubusercontent.com/nooblk-98/wordpess-docker/refs/heads/main/config/wp-config.php -O /var/www/html/wp-config.php
 
 # Install WordPress
 echo "⚙️ Installing WordPress..."
