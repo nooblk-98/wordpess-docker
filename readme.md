@@ -1,84 +1,99 @@
-## WordPress Docker (PHP 8.2, Nginx)
+# WordPress Docker
 
-Production-ready WordPress packaged for Docker with sane defaults, WP‑CLI automation, and optional external DB support.
+A production-ready WordPress deployment solution with Docker, featuring automated setup, WP-CLI integration, and multi-PHP version support.
 
-- Base image: `ghcr.io/nooblk-98/php-docker-nginx:php82`
-- Image (this repo): `ghcr.io/nooblk-98/wordpess-docker:php82`
-- Architectures: ARM64 and AMD64 (Apple Silicon, Graviton, Intel/AMD)
+## Overview
 
----
+This project provides containerized WordPress with optimized configurations for production environments. It includes automated WordPress installation, plugin management, and supports both bundled and external database configurations.
 
-## Prerequisites
+### Key Features
 
-- Docker and Docker Compose v2
-- Free ports: `8080` (HTTP) and `3306` (MariaDB) or adjust mappings
-- Basic familiarity with `.env` files
+- **Multi-PHP Support**: Available for PHP 5.6, 7.2, 7.4, 8.1, 8.2, and 8.3
+- **Automated Setup**: WordPress auto-installation with configurable admin accounts
+- **Plugin Management**: Automatic plugin installation and activation via environment variables
+- **WP-CLI Integration**: Built-in WordPress command-line interface
+- **Database Flexibility**: Supports both bundled MariaDB and external database connections
+- **Production Ready**: Optimized Nginx and PHP-FPM configuration
+- **Multi-Architecture**: ARM64 and AMD64 support (Apple Silicon, AWS Graviton, Intel/AMD)
 
----
+### Available Images
+
+| PHP Version | Image Tag | Base Image |
+|-------------|-----------|------------|
+| PHP 5.6 | `ghcr.io/nooblk-98/wordpess-docker:php56` | `ghcr.io/nooblk-98/php-docker-nginx:php56` |
+| PHP 7.2 | `ghcr.io/nooblk-98/wordpess-docker:php72` | `ghcr.io/nooblk-98/php-docker-nginx:php72` |
+| PHP 7.4 | `ghcr.io/nooblk-98/wordpess-docker:php74` | `ghcr.io/nooblk-98/php-docker-nginx:php74` |
+| PHP 8.1 | `ghcr.io/nooblk-98/wordpess-docker:php81` | `ghcr.io/nooblk-98/php-docker-nginx:php81` |
+| PHP 8.2 | `ghcr.io/nooblk-98/wordpess-docker:php82` | `ghcr.io/nooblk-98/php-docker-nginx:php82` |
+| PHP 8.3 | `ghcr.io/nooblk-98/wordpess-docker:php83` | `ghcr.io/nooblk-98/php-docker-nginx:php83` |
+
+## Requirements
+
+- Docker Engine 20.10+
+- Docker Compose v2
+- Available ports: 8080 (HTTP) and 3306 (MariaDB) or custom port configuration
 
 ## Quick Start
 
-1) Copy files and create your `.env`.
+### 1. Environment Configuration
 
-```
+Copy the example environment file and customize it:
+
+```bash
 cp env_example .env
 ```
 
-2) Edit `.env` and set DB credentials, admin user, and plugin list.
+### 2. Configuration Setup
 
-3) Start the stack.
+Edit the `.env` file with your database credentials, admin user details, and desired plugins.
 
-```
+### 3. Deploy the Stack
+
+```bash
 docker compose up -d
 ```
 
-4) Open your site: http://localhost:8080
+### 4. Access Your Site
 
-Login with the admin you set in `.env`.
-
----
-
-## What You Get
-
-- WordPress auto-install on first run (idempotent via `.wp-init-done`)
-- WP‑CLI available in the container
-- Plugin auto-install/activate from `.env`
-- MariaDB bundled by default or connect to an external DB
-- Persistent volumes for site and database data
-
----
-
+Navigate to http://localhost:8080 and log in with the admin credentials configured in your `.env` file.
 ## Configuration
 
-Edit `.env` to control setup:
+### Environment Variables
 
-- `PROJECT_NAME`: Container name prefix (also used for DB container)
-- `MYSQL_HOST`: Database host (default `mariadb` when using bundled DB)
-- `MYSQL_DATABASE`, `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_ROOT_PASSWORD`: Database credentials
-- `WP_SITE_TITLE`: WordPress site title
-- `WP_ADMIN_USER`, `WP_ADMIN_PASSWORD`, `WP_ADMIN_EMAIL`: Admin account
-- `WP_PLUGINS`: Space‑separated plugin slugs to preinstall and activate
-- `UPLOAD_MAX`, `POST_MAX`, `MEMORY_LIMIT`: PHP limits
+Configure your deployment by editing the `.env` file. Key variables include:
 
-Reference example: `env_example:1`
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `PROJECT_NAME` | Container name prefix | `wordpress` |
+| `MYSQL_HOST` | Database hostname | `mariadb` |
+| `MYSQL_DATABASE` | Database name | `wordpress_database` |
+| `MYSQL_USER` | Database username | `wordpress_user` |
+| `MYSQL_PASSWORD` | Database password | Required |
+| `MYSQL_ROOT_PASSWORD` | Database root password | Required |
+| `WP_SITE_TITLE` | WordPress site title | `WordPress` |
+| `WP_ADMIN_USER` | Admin username | `admin` |
+| `WP_ADMIN_PASSWORD` | Admin password | Required |
+| `WP_ADMIN_EMAIL` | Admin email address | Required |
+| `WP_PLUGINS` | Space-separated plugin slugs | Optional |
+| `UPLOAD_MAX` | Maximum upload file size | `256M` |
+| `POST_MAX` | Maximum POST request size | `256M` |
+| `MEMORY_LIMIT` | PHP memory limit | `512M` |
 
----
+### Service Architecture
 
-## Compose Layout
+The default deployment includes:
 
-Default services and volumes live in `docker-compose.yml:1`:
+- **WordPress Container**: Nginx + PHP-FPM + WP-CLI
+- **MariaDB Container**: Database server (version 10.x)
+- **Persistent Volumes**: 
+  - `web_data`: WordPress files and uploads
+  - `db_data`: Database storage
 
-- `wordpress` (Nginx + PHP‑FPM + WP‑CLI)
-- `mariadb` (10.x)
-- Volumes: `web_data` (WordPress files), `db_data` (MariaDB data)
+Default port mapping routes host port `8080` to container port `80`. Modify the `ports` section in `docker-compose.yml` to customize.
 
-Port mapping: host `8080` → container `80`. Change by editing the `ports` section in `docker-compose.yml`.
+## Docker Compose Configuration
 
----
-
-## Full Docker Compose Example
-
-Copy this into your project as `docker-compose.yml` (adjust ports and names as needed):
+### Complete Example
 
 ```yaml
 services:
@@ -133,7 +148,7 @@ services:
       retries: 10
       start_period: 30s
 
-  # Optional: automatically restart unhealthy containers
+  # Optional: Container health monitoring
   autoheal:
     image: willfarrell/autoheal
     restart: unless-stopped
@@ -145,138 +160,181 @@ volumes:
   web_data:
 ```
 
-Note: Healthchecks are included above so tools like Autoheal can act reliably.
+### Health Checks
 
----
+Health checks are included to enable monitoring tools like Autoheal to automatically restart failed containers.
 
-## Full .env Example
+## Environment Configuration Example
 
-Copy as `.env` in your project and adjust values:
+Create a `.env` file in your project directory with the following configuration:
 
 ```env
-# Project/containers
+# Project Configuration
 PROJECT_NAME=wordpress
 
-# Database (internal MariaDB or external host)
+# Database Configuration
 MYSQL_HOST=mariadb
 MYSQL_DATABASE=wordpress_database
 MYSQL_USER=wordpress_user
 MYSQL_PASSWORD=changeMeStrong
 MYSQL_ROOT_PASSWORD=changeMeRootStrong
 
-# WordPress admin and site
+# WordPress Configuration
 WP_SITE_TITLE=WordPress
 WP_ADMIN_USER=admin
 WP_ADMIN_PASSWORD=changeMeAdminStrong
 WP_ADMIN_EMAIL=admin@example.com
 
-# Pre-install plugin slugs (space-separated)
+# Plugin Configuration (space-separated slugs)
 WP_PLUGINS="advanced-custom-fields temporary-login-without-password all-in-one-wp-migration"
 
-# PHP limits
+# PHP Configuration
 UPLOAD_MAX=256M
 POST_MAX=256M
 MEMORY_LIMIT=512M
 ```
 
-Tip: For external DBs, set `MYSQL_HOST` to your DB hostname and comment out the `mariadb` service in the compose file.
+**Note**: For external database connections, modify `MYSQL_HOST` to your database hostname and remove the `mariadb` service from the compose file.
 
----
+## Deployment Options
 
-## Use the Bundled MariaDB (Default)
+### Using Bundled MariaDB Database
 
-1) Ensure `.env` has database values and `MYSQL_HOST=mariadb`.
-2) Start the stack:
+The default configuration includes a MariaDB container for database services:
 
-```
+1. Ensure your `.env` file contains the database configuration with `MYSQL_HOST=mariadb`
+2. Deploy the complete stack:
+
+```bash
 docker compose up -d
 ```
 
-On first run the container installs WordPress, creates the admin user, and installs any plugins listed in `WP_PLUGINS`.
+The initial deployment automatically installs WordPress, creates the admin user, and installs any plugins specified in the `WP_PLUGINS` environment variable.
 
----
+### Using External Database
 
-## Use an External Database (Optional)
+For production environments with existing database infrastructure:
 
-1) Set the DB host and credentials in `.env`:
+1. Configure external database connection in `.env`:
 
-```
+```env
 MYSQL_HOST=db.myhost.com
 MYSQL_DATABASE=external_db
 MYSQL_USER=wp_user
 MYSQL_PASSWORD=securepass
 ```
 
-2) Disable the bundled DB by commenting out `mariadb` in `docker-compose.yml`.
+2. Remove or comment out the `mariadb` service in `docker-compose.yml`
 
-3) Recreate WordPress only:
+3. Deploy WordPress service only:
 
-```
+```bash
 docker compose up -d wordpress
 ```
 
-Ensure the DB allows connections from the Docker host and the credentials are correct.
+Ensure your external database allows connections from the Docker host and verify credentials are correct.
 
----
+## WordPress CLI Management
 
-## WP‑CLI Usage
+### WP-CLI Commands
 
-Run WP‑CLI inside the container:
+Execute WordPress CLI commands within the container:
 
-```
+```bash
+# Check WordPress version
 docker compose exec wordpress wp core version --allow-root
+
+# List installed plugins
 docker compose exec wordpress wp plugin list --allow-root
+
+# List WordPress users
 docker compose exec wordpress wp user list --allow-root
+
+# Update WordPress core
+docker compose exec wordpress wp core update --allow-root
 ```
 
-Tip: Add `-u www-data` if you prefer the web user: `docker compose exec -u www-data wordpress wp ...`
-
----
-
-## Backups and Restore
-
-- Database backup (MariaDB volume):
-
-```
-docker compose exec mariadb sh -c "mysqldump -u$MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE" > backup.sql
+**Alternative User Context**: Use `-u www-data` for web user execution:
+```bash
+docker compose exec -u www-data wordpress wp plugin status
 ```
 
-- Database restore:
+## Backup and Restore Operations
 
-```
-docker compose exec -i mariadb sh -c "mysql -u$MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE" < backup.sql
+### Database Backup
+
+Create a backup of your MariaDB database:
+
+```bash
+docker compose exec mariadb sh -c "mysqldump -u\$MYSQL_USER -p\$MYSQL_PASSWORD \$MYSQL_DATABASE" > backup.sql
 ```
 
-- Files backup (WordPress content): copy `web_data` volume. Example using a temporary helper:
+### Database Restore
 
+Restore from a backup file:
+
+```bash
+docker compose exec -i mariadb sh -c "mysql -u\$MYSQL_USER -p\$MYSQL_PASSWORD \$MYSQL_DATABASE" < backup.sql
 ```
+
+### File System Backup
+
+Backup WordPress files and uploads:
+
+```bash
 docker run --rm -v wordpess-docker_web_data:/src -v $PWD:/dst alpine sh -c "cd /src && tar czf /dst/wp-files.tgz ."
 ```
 
----
+## Maintenance Operations
 
-## Common Tasks
+### Port Configuration
 
-- Change HTTP port: edit `wordpress.ports` in `docker-compose.yml` (e.g., `"80:80"`).
-- Update image: `docker compose pull && docker compose up -d --no-deps wordpress`.
-- Rebuild after Dockerfile changes: `docker compose up -d --build`.
-- Reset first‑run install: remove the flag file in `web_data` volume (`/var/www/html/.wp-init-done`).
+Modify the HTTP port by editing the `wordpress.ports` section in `docker-compose.yml`:
 
-Example reset (removes the flag file only):
-
+```yaml
+ports:
+  - "80:80"  # Direct port 80 mapping
 ```
+
+### Image Updates
+
+Update to the latest image version:
+
+```bash
+docker compose pull && docker compose up -d --no-deps wordpress
+```
+
+### Development Builds
+
+Rebuild after making Dockerfile changes:
+
+```bash
+docker compose up -d --build
+```
+
+### Reset Installation
+
+Remove the initialization flag to trigger fresh WordPress setup:
+
+```bash
 docker compose run --rm --entrypoint bash wordpress -lc "rm -f /var/www/html/.wp-init-done"
 ```
 
-To fully reset, remove volumes: `docker compose down -v` (this deletes your data).
+**Warning**: Complete reset (removes all data):
 
----
-
-## Optional: Autoheal
-
-You can add [willfarrell/autoheal](https://github.com/willfarrell/docker-autoheal) to auto‑restart unhealthy containers. Healthchecks are already included in the example above. If you prefer a dedicated compose with Autoheal enabled and labels set, use `docker-compose.autoheal.yml` (added to this repo) or the snippet below:
-
+```bash
+docker compose down -v
 ```
+
+## Container Health Monitoring
+
+### Autoheal Integration
+
+Deploy automatic container restart functionality using [willfarrell/autoheal](https://github.com/willfarrell/docker-autoheal). Health checks are pre-configured in the provided Docker Compose examples.
+
+For enhanced monitoring, use the dedicated autoheal configuration in `docker-compose.autoheal.yml` or implement the following:
+
+```yaml
 services:
   autoheal:
     image: willfarrell/autoheal
@@ -292,26 +350,53 @@ services:
       - autoheal=true
 ```
 
-Note: Autoheal restarts containers only when they define a `HEALTHCHECK`.
-
----
+**Note**: Autoheal functionality requires containers to define health check configurations.
 
 ## Troubleshooting
 
-- Cannot connect to DB: verify `MYSQL_*` values and `MYSQL_HOST`; if external, confirm network access and firewall rules.
-- Port already in use: change `8080:80` mapping in `docker-compose.yml`.
-- Plugins not installing: ensure `WP_PLUGINS` contains valid slugs; check logs with `docker compose logs -f wordpress`.
-- Wrong site URL: initial install uses `http://localhost:8080`. Change in WordPress Settings → General after first login, or update via WP‑CLI.
+### Common Issues and Solutions
 
----
+| Issue | Solution |
+|-------|----------|
+| Database connection failed | Verify `MYSQL_*` environment variables and `MYSQL_HOST` configuration. For external databases, confirm network access and firewall rules. |
+| Port binding error | Modify port mapping in `docker-compose.yml` (e.g., change `8080:80` to `9080:80`) |
+| Plugin installation failure | Ensure `WP_PLUGINS` contains valid WordPress.org plugin slugs. Check container logs: `docker compose logs -f wordpress` |
+| Incorrect site URL | Default installation uses `http://localhost:8080`. Update in WordPress Admin → Settings → General, or use WP-CLI |
 
-## Notes
+### Debug Commands
 
-- WordPress config is provided via `config/wp-config.php:1` and baked into the image.
-- Base runtime (Nginx + PHP‑FPM) is provided by `ghcr.io/nooblk-98/php-docker-nginx:php82`.
+Monitor container logs:
+```bash
+docker compose logs -f wordpress
+docker compose logs -f mariadb
+```
 
----
+Check container health status:
+```bash
+docker compose ps
+```
+
+## Technical Details
+
+### Configuration Management
+
+- WordPress configuration is provided via `config/wp-config.php` and integrated into the container image
+- Base runtime environment utilizes optimized Nginx and PHP-FPM configuration from `ghcr.io/nooblk-98/php-docker-nginx`
+
+### Architecture
+
+The solution implements a multi-container architecture with:
+- **Application Layer**: Nginx reverse proxy with PHP-FPM processing
+- **Database Layer**: MariaDB with persistent volume storage
+- **Volume Management**: Separate volumes for application files and database storage
 
 ## Contributing
 
-Issues and PRs are welcome.
+We welcome contributions to improve this WordPress Docker solution. Please submit issues and pull requests through the project repository.
+
+### Development Guidelines
+
+- Maintain compatibility across all supported PHP versions
+- Ensure changes work with both bundled and external database configurations
+- Test multi-architecture builds (ARM64/AMD64)
+- Update documentation for any new features or configuration changes
