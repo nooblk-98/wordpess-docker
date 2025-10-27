@@ -32,14 +32,14 @@ This project provides containerized WordPress with optimized configurations for 
 
 ### Available Images
 
-| PHP Version | Image Tag | Base Image |
-|-------------|-----------|------------|
-| PHP 5.6 | `ghcr.io/nooblk-98/wordpess-docker:php56` | `ghcr.io/nooblk-98/php-docker-nginx:php56` |
-| PHP 7.2 | `ghcr.io/nooblk-98/wordpess-docker:php72` | `ghcr.io/nooblk-98/php-docker-nginx:php72` |
-| PHP 7.4 | `ghcr.io/nooblk-98/wordpess-docker:php74` | `ghcr.io/nooblk-98/php-docker-nginx:php74` |
-| PHP 8.1 | `ghcr.io/nooblk-98/wordpess-docker:php81` | `ghcr.io/nooblk-98/php-docker-nginx:php81` |
-| PHP 8.2 | `ghcr.io/nooblk-98/wordpess-docker:php82` | `ghcr.io/nooblk-98/php-docker-nginx:php82` |
-| PHP 8.3 | `ghcr.io/nooblk-98/wordpess-docker:php83` | `ghcr.io/nooblk-98/php-docker-nginx:php83` |
+| PHP Version | GitHub Container Registry | Docker Hub | Base Image |
+|-------------|---------------------------|------------|------------|
+| PHP 5.6 | `ghcr.io/nooblk-98/wordpess-docker:php56` | `lahiru98s/wordpess-docker:php56` | `ghcr.io/nooblk-98/php-docker-nginx:php56` |
+| PHP 7.2 | `ghcr.io/nooblk-98/wordpess-docker:php72` | `lahiru98s/wordpess-docker:php72` | `ghcr.io/nooblk-98/php-docker-nginx:php72` |
+| PHP 7.4 | `ghcr.io/nooblk-98/wordpess-docker:php74` | `lahiru98s/wordpess-docker:php74` | `ghcr.io/nooblk-98/php-docker-nginx:php74` |
+| PHP 8.1 | `ghcr.io/nooblk-98/wordpess-docker:php81` | `lahiru98s/wordpess-docker:php81` | `ghcr.io/nooblk-98/php-docker-nginx:php81` |
+| PHP 8.2 | `ghcr.io/nooblk-98/wordpess-docker:php82` | `lahiru98s/wordpess-docker:php82` | `ghcr.io/nooblk-98/php-docker-nginx:php82` |
+| PHP 8.3 | `ghcr.io/nooblk-98/wordpess-docker:php83` | `lahiru98s/wordpess-docker:php83` | `ghcr.io/nooblk-98/php-docker-nginx:php83` |
 
 ## Requirements
 
