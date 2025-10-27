@@ -1,0 +1,36 @@
+name: Build All PHP Versions
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 1 1 * *'
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
+jobs:
+  build-php-56:
+    uses: ./.github/workflows/php56.yml
+    secrets: inherit
+    
+  build-php-72:
+    uses: ./.github/workflows/php72.yml
+    secrets: inherit
+    
+  build-php-74:
+    uses: ./.github/workflows/php74.yml
+    secrets: inherit
+    
+  build-php-81:
+    uses: ./.github/workflows/php81.yml
+    secrets: inherit
+    
+  build-php-82:
+    uses: ./.github/workflows/php82.yml
+    secrets: inherit
+    
+  build-php-83:
+    uses: ./.github/workflows/php83.yml
+    secrets: inherit
