@@ -3,7 +3,7 @@
 # WordPress Docker Stack
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/nooblk-98/wordpess-docker/build-all-php.yml?branch=main&style=flat-square&label=BUILD)](https://github.com/nooblk-98/wordpess-docker/actions)
-[![Docker Pulls](https://img.shields.io/docker/pulls/nooblk98/wordpess-docker?style=flat-square&label=DOCKER%20PULLS)](https://hub.docker.com/r/nooblk98/wordpess-docker)
+[![Docker Pulls](https://img.shields.io/docker/pulls/nooblk98/wordpess-docker?style=flat-square&label=DOCKER%20PULLS)](https://hub.docker.com/r/lahiru98s/wordpess-docker)
 [![GitHub repo size](https://img.shields.io/github/repo-size/nooblk-98/wordpess-docker?style=flat-square&label=REPO%20SIZE)](https://github.com/nooblk-98/wordpess-docker)
 [![License](https://img.shields.io/github/license/nooblk-98/wordpess-docker?style=flat-square&label=LICENSE)](https://github.com/nooblk-98/wordpess-docker/blob/main/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/nooblk-98/wordpess-docker?style=flat-square&label=STARS)](https://github.com/nooblk-98/wordpess-docker/stargazers)
