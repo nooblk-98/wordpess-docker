@@ -41,13 +41,12 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
+          file: ./docker/php82/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
           # Optional build cache for speed
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
-            ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest
             ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:php82
-            docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest
             docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:php82

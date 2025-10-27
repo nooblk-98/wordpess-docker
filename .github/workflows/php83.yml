@@ -1,4 +1,4 @@
-name: Build php74
+name: Build php83
 
 on:
   workflow_dispatch:
@@ -41,12 +41,14 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./docker/php74/Dockerfile
+          file: ./docker/php83/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
           # Optional build cache for speed
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
-            ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:php74
-            docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:php74
+            ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest
+            ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:php82
+            docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest
+            docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:php82
