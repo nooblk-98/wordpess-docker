@@ -1,6 +1,16 @@
-# WordPress Docker
+# WordPress Docker Stack
 
-A production-ready WordPress deployment solution with Docker, featuring automated setup, WP-CLI integration, and multi-PHP version support.
+![Build Status](https://img.shields.io/github/actions/workflow/status/nooblk-98/wordpess-docker/build-all-php.yml?branch=main&style=flat-square&label=BUILD)
+![Docker Pulls](https://img.shields.io/docker/pulls/nooblk98/wordpess-docker?style=flat-square&label=DOCKER%20PULLS)
+![GitHub repo size](https://img.shields.io/github/repo-size/nooblk-98/wordpess-docker?style=flat-square&label=REPO%20SIZE)
+![License](https://img.shields.io/github/license/nooblk-98/wordpess-docker?style=flat-square&label=LICENSE)
+![GitHub stars](https://img.shields.io/github/stars/nooblk-98/wordpess-docker?style=flat-square&label=STARS)
+
+**Production-ready WordPress + Nginx Docker containers for modern web applications**
+
+*Supporting WordPress, WP-CLI automation, multi-PHP versions, and any WordPress application*
+
+[Quick Start](#quick-start) • [Available Images](#available-images) • [Usage](#deployment-options) • [Performance](#maintenance-operations)
 
 ## Overview
 
