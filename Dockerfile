@@ -14,7 +14,7 @@ RUN echo "memory_limit = 512M" > /usr/local/etc/php/conf.d/memory-limit.ini
 
 # Copy and fix entrypoint script
 COPY bin/entrypoint.sh /entrypoint.sh
-COPY config/wp-config.php /var/www/html/wp-config.php
+COPY config/wp-config.php /var/www/wp-config.php
 COPY scripts/init.sh /usr/local/bin/init.sh
 COPY scripts/db-helth-check.sh /usr/local/bin/db-helth-check.sh
 
