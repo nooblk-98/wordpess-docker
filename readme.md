@@ -112,7 +112,9 @@ Default port mapping routes host port `8080` to container port `80`. Modify the 
 ```yaml
 services:
   wordpress:
+    # Use either GitHub Container Registry or Docker Hub
     image: ghcr.io/nooblk-98/wordpess-docker:php82
+    # image: lahiru98s/wordpess-docker:php82
     container_name: ${PROJECT_NAME}
     restart: unless-stopped
     environment:
